@@ -23,11 +23,11 @@ public class Main {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Oyuncu sayısını (en fazla 7) girin: ");
 			int oyuncuSayisi = scanner.nextInt();
-			if (oyuncuSayisi > 7) {
+			if (oyuncuSayisi > 7 || oyuncuSayisi <= 0) {
 				while (true) {
 					System.out.println("Yanlış giriş. Oyuncu sayısını (en fazla 7) girin: ");
 					oyuncuSayisi = scanner.nextInt();
-					if (oyuncuSayisi <= 7)
+					if (oyuncuSayisi <= 7 && oyuncuSayisi > 0)
 						break;
 				}
 			}
@@ -35,9 +35,15 @@ public class Main {
 			String[] oyuncuAdlari = new String[7];
 
 			for (int i = 0; i < oyuncuSayisi; i++) {
-				System.out.println("Lütfen " + (i + 1) + ". Oyuncunun adını girin.");
-				oyuncuAdlari[i] = scanner.nextLine();
+			    System.out.println("Lütfen " + (i + 1) + ". Oyuncunun adını girin.");
+			    String giris = scanner.nextLine().trim(); // Boşlukları temizle
+			    if (giris.isEmpty()) {
+			        oyuncuAdlari[i] = "Oyuncu " + (i + 1); // Boş metin girildiyse varsayılan adı ata
+			    } else {
+			        oyuncuAdlari[i] = giris;
+			    }
 			}
+
 
 			while (true) {
 				Kasa kasa = new Kasa();
@@ -72,9 +78,16 @@ public class Main {
 					kart.kartCek();
 					kasa.ekleKasaKartlari(kart.getCekilenKart());
 				}
-
 				// Oyuncuların kartlarını ve kasadaki kartları gösterme
 				for (Oyuncu oyuncu : oyuncular) {
+					
+					
+					// Deneme yeri:
+					/*
+						oyuncu.setOyuncuKartlari(0, "A");
+						oyuncu.setOyuncuKartlari(1, "A");*/
+					
+					
 					oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
 				}
 				kasa.kasaKartlariniGosterGizli(kasa.getKasaKartlari());
@@ -118,7 +131,7 @@ public class Main {
 				}
 
 				System.out.println("Kasa Oynuyor...");
-				kasa.kasaOynat();
+				kasa.kasaOynat(kart);
 				kasa.kasaKartlariniGoster(kasa.getKasaKartlari());
 
 				// KAZANAN KAYBEDEN
@@ -241,12 +254,34 @@ public class Main {
 		System.out.println(oyuncu.getAd() + " Bakiye Miktari : " + oyuncu.getBakiye());
 	}
 
+	public static boolean kartlarAyniMi(List<String> kartlar) {
+
+		String kart1 = kartlar.get(0);
+		String kart2 = kartlar.get(1);
+		if (kart1 == "K" || kart1 == "J" || kart1 == "Q") {
+			kart1 = "10";
+		}
+		if (kart2 == "K" || kart2 == "J" || kart2 == "Q") {
+			kart2 = "10";
+		}
+
+		if (kart1.equals(kart2)) {
+			return true;
+		}
+
+		else {
+			return false;
+		}
+	}
+
 	public static void oyuncuyaSoruSorIlk(Oyuncu oyuncu) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 		oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
 		String secim;
+		boolean kartBolunebilirMi = false;
+		kartBolunebilirMi = kartlarAyniMi(oyuncu.getOyuncuKartlari());
 
-		if (oyuncu.getOyuncuKartlari().get(0).equals(oyuncu.getOyuncuKartlari().get(1))) {
+		if (kartBolunebilirMi) {
 			System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART / 2x (Bahsi İkiye Katlar)/ Böl");
 			secim = scanner.nextLine();
 			while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart") && !secim.equals("KART")
@@ -274,13 +309,30 @@ public class Main {
 				oyuncu.setOyuncu2XeBastiMi(true);
 				oyuncu.paraCek(oyuncu.getBahis());
 				oyuncu.setBahis(oyuncu.getBahis() * 2);
-				if (oyuncu.getOyuncuKartlari().get(0).equals(oyuncu.getOyuncuKartlari().get(1))) {
+				if (kartBolunebilirMi) {
 					System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART / Böl");
+					secim = scanner.nextLine();
+					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
+							&& !secim.equals("KART") && !secim.equals("Böl") && !secim.equals("BÖL")
+							&& !secim.equals("Bol") && !secim.equals("BOL") && !secim.equals("böl")
+							&& !secim.equals("bol")) {
+						System.out.println("Yanlış giris yaptınız.");
+						System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART / Böl");
+
+						secim = scanner.nextLine();
+					}
 				} else {
 					System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART ");
+					secim = scanner.nextLine();
+					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
+							&& !secim.equals("KART")) {
+						System.out.println("Yanlış giris yaptınız.");
+						System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART");
+
+						secim = scanner.nextLine();
+					}
 				}
 			}
-			secim = scanner.nextLine();
 
 		}
 		if ((secim.equals("böl") || secim.equals("bol") || secim.equals("BOL") || secim.equals("BÖL")
@@ -308,6 +360,12 @@ public class Main {
 				for (int i = 1; i <= 2; i++) {
 					System.out.println(i + ". setiniz için seçin : PAS / KART");
 					String secim2 = scanner.nextLine();
+					while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart")
+							&& !secim2.equals("KART")) {
+						System.out.println("Yanlış giris yaptınız.");
+						System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
+						secim = scanner.nextLine();
+					}
 					if (secim2.equals("pas") || secim2.equals("PAS")) {
 						oyuncu.setBolunenSetPasaBastiMi(true, (i - 1));
 					} else if (secim2.equals("kart") || secim2.equals("KART")) {
@@ -383,7 +441,6 @@ public class Main {
 	public static void oyuncuyaSoruSor(Oyuncu oyuncu) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 
-		// ?? Gereksiz ama zararı yok
 		try {
 			if (Integer.parseInt(oyuncu.oyuncuHesapla()) > 21) {
 				oyuncu.setOyuncuPasDediMi(true);
@@ -461,7 +518,7 @@ public class Main {
 				System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
 				secim2 = scanner.nextLine();
 			}
-//deneme
+
 			if (secim2.equals("kart") || secim2.equals("KART")) {
 				kart.kartCek();
 				kart.cekilenKartiYazdir();

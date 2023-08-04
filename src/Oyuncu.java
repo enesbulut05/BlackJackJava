@@ -130,7 +130,7 @@ public class Oyuncu {
 	}
 
 	public String oyuncuSetleriniHesapla(List<String> bolunenOyuncuKartlari) {
-		String toplam = null;
+		String toplam = "";
 		int toplam1 = 0;
 		int toplam2 = 0;
 

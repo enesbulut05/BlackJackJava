@@ -24,8 +24,8 @@ public class Kasa {
 		this.kasaKartlari.set(i, kartDegistir);
 	}
 
-	public void kasaOynat() throws IOException {
-		Kart kart = new Kart();
+	public void kasaOynat(Kart kart) throws IOException {
+		
 		boolean as = false;
 		if (kasaHesapla().contains("yada")) {
 			as = true;
@@ -63,7 +63,6 @@ public class Kasa {
 	
 		for (int i = 0; i < kasaKartlari.size(); i++) {
 			if (kasaKartlari.get(i).equals("K") || kasaKartlari.get(i).equals("Q") || kasaKartlari.get(i).equals("J")) {
-				// setKasaKartlari(i, "10");
 				toplam1 += 10;
 				toplam2 += 10;
 			} else if (kasaKartlari.get(i).equals("A")) {
