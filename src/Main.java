@@ -317,7 +317,7 @@ public class Main {
 							&& !secim.equals("Bol") && !secim.equals("BOL") && !secim.equals("böl")
 							&& !secim.equals("bol")) {
 						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART / Böl");
+						System.out.println(oyuncu.getAd() + "Lütfen seçiniz. PAS / KART / Böl");
 
 						secim = scanner.nextLine();
 					}
@@ -327,7 +327,7 @@ public class Main {
 					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
 							&& !secim.equals("KART")) {
 						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART");
+						System.out.println(oyuncu.getAd() + "Lütfen seçiniz. PAS / KART");
 
 						secim = scanner.nextLine();
 					}
