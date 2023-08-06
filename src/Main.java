@@ -11,8 +11,11 @@ public class Main {
 	static Kart kart = new Kart();
 
 	public static void main(String[] args) throws IOException {
-		double bakiyeMiktari[] = { 500, 500, 500, 500, 500, 500, 500 }; // burasi array olmalı. Başlangıç aynı olabilir
-		// // sonra değişecek.
+		
+		int baslangic = 500; 
+		double bakiyeMiktari[] = { baslangic, baslangic, baslangic, baslangic, baslangic, baslangic, baslangic }; 
+
+		
 		double bahis = 25;
 
 		boolean yeni = true; // yeni oyuna basıldığında yeni = true olup iç döngüden çıkacak.
@@ -317,7 +320,7 @@ public class Main {
 							&& !secim.equals("Bol") && !secim.equals("BOL") && !secim.equals("böl")
 							&& !secim.equals("bol")) {
 						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + "Lütfen seçiniz. PAS / KART / Böl");
+						System.out.println(oyuncu.getAd() + " Lütfen seçiniz. PAS / KART / Böl");
 
 						secim = scanner.nextLine();
 					}
@@ -327,7 +330,7 @@ public class Main {
 					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
 							&& !secim.equals("KART")) {
 						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + "Lütfen seçiniz. PAS / KART");
+						System.out.println(oyuncu.getAd() + " Lütfen seçiniz. PAS / KART");
 
 						secim = scanner.nextLine();
 					}
@@ -341,6 +344,7 @@ public class Main {
 
 				System.out.println("Bakiyeniz Kartları Bölmek İçin Yetesiz. \nLütfen seçiniz. PAS / KART ");
 				secim = scanner.nextLine();
+			
 			} else {
 				oyuncu.setOyuncuBoleBastiMi(true);
 				oyuncu.paraCek(oyuncu.getBahis());
@@ -364,7 +368,7 @@ public class Main {
 							&& !secim2.equals("KART")) {
 						System.out.println("Yanlış giris yaptınız.");
 						System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
-						secim = scanner.nextLine();
+						secim2 = scanner.nextLine();
 					}
 					if (secim2.equals("pas") || secim2.equals("PAS")) {
 						oyuncu.setBolunenSetPasaBastiMi(true, (i - 1));
