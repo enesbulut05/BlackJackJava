@@ -11,11 +11,10 @@ public class Main {
 	static Kart kart = new Kart();
 
 	public static void main(String[] args) throws IOException {
-		
-		int baslangic = 500; 
-		double bakiyeMiktari[] = { baslangic, baslangic, baslangic, baslangic, baslangic, baslangic, baslangic }; 
 
-		
+		int baslangic = 500;
+		double bakiyeMiktari[] = { baslangic, baslangic, baslangic, baslangic, baslangic, baslangic, baslangic };
+
 		double bahis = 25;
 
 		boolean yeni = true; // yeni oyuna basıldığında yeni = true olup iç döngüden çıkacak.
@@ -38,15 +37,14 @@ public class Main {
 			String[] oyuncuAdlari = new String[7];
 
 			for (int i = 0; i < oyuncuSayisi; i++) {
-			    System.out.println("Lütfen " + (i + 1) + ". Oyuncunun adını girin.");
-			    String giris = scanner.nextLine().trim(); // Boşlukları temizle
-			    if (giris.isEmpty()) {
-			        oyuncuAdlari[i] = "Oyuncu " + (i + 1); // Boş metin girildiyse varsayılan adı ata
-			    } else {
-			        oyuncuAdlari[i] = giris;
-			    }
+				System.out.println("Lütfen " + (i + 1) + ". Oyuncunun adını girin.");
+				String giris = scanner.nextLine().trim(); // Boşlukları temizle
+				if (giris.isEmpty()) {
+					oyuncuAdlari[i] = "Oyuncu " + (i + 1); // Boş metin girildiyse varsayılan adı ata
+				} else {
+					oyuncuAdlari[i] = giris;
+				}
 			}
-
 
 			while (true) {
 				Kasa kasa = new Kasa();
@@ -83,25 +81,41 @@ public class Main {
 				}
 				// Oyuncuların kartlarını ve kasadaki kartları gösterme
 				for (Oyuncu oyuncu : oyuncular) {
-					
-					
+
 					// Deneme yeri:
 					/*
-						oyuncu.setOyuncuKartlari(0, "A");
-						oyuncu.setOyuncuKartlari(1, "A");*/
-					
-					
+					 * oyuncu.setOyuncuKartlari(0, "A"); oyuncu.setOyuncuKartlari(1, "A");
+					 */
+
 					oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
 				}
 				kasa.kasaKartlariniGosterGizli(kasa.getKasaKartlari());
 
 				// Oyunculara tek tek soru sor.
-				boolean herkesPasaBastiMi = false;
-				boolean pasKontrol[] = new boolean[oyuncuSayisi];
+				/*
+				 * boolean herkesPasaBastiMi = false; boolean pasKontrol[] = new
+				 * boolean[oyuncuSayisi];
+				 * 
+				 * while (herkesPasaBastiMi == false) { for (Oyuncu oyuncu : oyuncular) {
+				 * 
+				 * if (oyuncu.isBolunenOyuncuHepsindePasaBastiMi() == true) {
+				 * oyuncu.setOyuncuPasDediMi(true); } if (oyuncu.isOyuncuPasDediMi() == false) {
+				 * 
+				 * if (oyuncu.isOyuncununIlkTuruMu() == true) {
+				 * 
+				 * oyuncuyaSoruSorIlk(oyuncu); oyuncu.setOyuncununIlkTuruMu(false); } else {
+				 * oyuncuyaSoruSor(oyuncu); } } int pasSayaci = 0;
+				 * pasKontrol[oyuncu.getOyuncuSirasi() - 1] = oyuncu.isOyuncuPasDediMi(); for
+				 * (int i = 0; i < oyuncuSayisi; i++) {
+				 * 
+				 * if (pasKontrol[i] == true) { pasSayaci++; if (pasSayaci == oyuncular.size())
+				 * herkesPasaBastiMi = true; } } } }
+				 */
 
-				while (herkesPasaBastiMi == false) {
-					for (Oyuncu oyuncu : oyuncular) {
+				// Oyuncu Pas diyene kadar sor
 
+				for (Oyuncu oyuncu : oyuncular) {
+					while (oyuncu.isOyuncuPasDediMi() == false) {
 						if (oyuncu.isBolunenOyuncuHepsindePasaBastiMi() == true) {
 							oyuncu.setOyuncuPasDediMi(true);
 						}
@@ -115,17 +129,8 @@ public class Main {
 								oyuncuyaSoruSor(oyuncu);
 							}
 						}
-						int pasSayaci = 0;
-						pasKontrol[oyuncu.getOyuncuSirasi() - 1] = oyuncu.isOyuncuPasDediMi();
-						for (int i = 0; i < oyuncuSayisi; i++) {
-
-							if (pasKontrol[i] == true) {
-								pasSayaci++;
-								if (pasSayaci == oyuncular.size())
-									herkesPasaBastiMi = true;
-							}
-						}
 					}
+
 				}
 
 				// Oyuncuların ve Kasanın Kartlarını Göster
@@ -168,6 +173,7 @@ public class Main {
 
 			}
 		}
+
 	}
 
 	public static void normalOyuncuSonucu(Oyuncu oyuncu, Kasa kasa) {
@@ -312,29 +318,9 @@ public class Main {
 				oyuncu.setOyuncu2XeBastiMi(true);
 				oyuncu.paraCek(oyuncu.getBahis());
 				oyuncu.setBahis(oyuncu.getBahis() * 2);
-				if (kartBolunebilirMi) {
-					System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART / Böl");
-					secim = scanner.nextLine();
-					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
-							&& !secim.equals("KART") && !secim.equals("Böl") && !secim.equals("BÖL")
-							&& !secim.equals("Bol") && !secim.equals("BOL") && !secim.equals("böl")
-							&& !secim.equals("bol")) {
-						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + " Lütfen seçiniz. PAS / KART / Böl");
 
-						secim = scanner.nextLine();
-					}
-				} else {
-					System.out.println(oyuncu.getAd() + " Bahis 2ye katlandı. Lütfen seçiniz. PAS / KART ");
-					secim = scanner.nextLine();
-					while (!secim.equals("pas") && !secim.equals("PAS") && !secim.equals("kart")
-							&& !secim.equals("KART")) {
-						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + " Lütfen seçiniz. PAS / KART");
+				secim = "kart";
 
-						secim = scanner.nextLine();
-					}
-				}
 			}
 
 		}
@@ -344,7 +330,7 @@ public class Main {
 
 				System.out.println("Bakiyeniz Kartları Bölmek İçin Yetesiz. \nLütfen seçiniz. PAS / KART ");
 				secim = scanner.nextLine();
-			
+
 			} else {
 				oyuncu.setOyuncuBoleBastiMi(true);
 				oyuncu.paraCek(oyuncu.getBahis());
@@ -362,44 +348,65 @@ public class Main {
 				System.out.println("Set 2 : " + oyuncu.getBolunenOyuncuKartlari2() + " Toplam Değer : "
 						+ oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari2()));
 				for (int i = 1; i <= 2; i++) {
-					System.out.println(i + ". setiniz için seçin : PAS / KART");
-					String secim2 = scanner.nextLine();
-					while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart")
-							&& !secim2.equals("KART")) {
-						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
-						secim2 = scanner.nextLine();
-					}
-					if (secim2.equals("pas") || secim2.equals("PAS")) {
-						oyuncu.setBolunenSetPasaBastiMi(true, (i - 1));
-					} else if (secim2.equals("kart") || secim2.equals("KART")) {
-						kart.kartCek();
-						kart.cekilenKartiYazdir();
+
+					while (oyuncu.getBolunenSetPasaBastiMi()[i - 1] == false) {
+						if (i == 1)
+							System.out.println("1. Set: " + oyuncu.getBolunenOyuncuKartlari1() + "Toplam Değer : "
+									+ oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari1()));
+						if (i == 2)
+							System.out.println("2. Set: " + oyuncu.getBolunenOyuncuKartlari2() + "Toplam Değer : "
+									+ oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari2()));
+
+						System.out.println(oyuncu.getAd() + " : " + i + ". setiniz için seçin : PAS/KART");
+						String secim2 = scanner.nextLine();
+
+						while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart")
+								&& !secim2.equals("KART")) {
+							System.out.println("Yanlış giris yaptınız.");
+							System.out.println(oyuncu.getAd() + ": " + i + ". setiniz için seçin : PAS/KART");
+							secim2 = scanner.nextLine();
+						}
+
+						if (secim2.equals("pas") || secim2.equals("PAS")) {
+							oyuncu.setBolunenSetPasaBastiMi(true, (i - 1));
+							break;
+						} else if (secim2.equals("kart") || secim2.equals("KART")) {
+							kart.kartCek();
+							kart.cekilenKartiYazdir();
+							if (i == 1) {
+								oyuncu.ekleBolunenOyuncuKartlari1(kart.getCekilenKart());
+							}
+							if (i == 2) {
+								oyuncu.ekleBolunenOyuncuKartlari2(kart.getCekilenKart());
+							}
+						}
+
 						if (i == 1) {
-							oyuncu.ekleBolunenOyuncuKartlari1(kart.getCekilenKart());
-							System.out.print("1. Set : " + oyuncu.getBolunenOyuncuKartlari1());
-							System.out.print(" Toplam Değer : "
-									+ oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari1()) + "\n");
-						}
-						if (i == 2) {
-							oyuncu.ekleBolunenOyuncuKartlari2(kart.getCekilenKart());
-							System.out.print("2. Set  : " + oyuncu.getBolunenOyuncuKartlari2());
-							System.out.print(" Toplam Değer : "
-									+ oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari2()) + "\n");
-						}
-					}
-					if (i == 1) {
-						try {
-							if (Integer
-									.parseInt(oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari1())) > 21) {
-								System.out.print(" PATLADIN :) \n");
-								oyuncu.setBolunenSetPasaBastiMi(true, i - 1);
+							try {
+								if (Integer.parseInt(
+										oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari1())) > 21) {
+									System.out.print(" PATLADIN :) \n");
+									oyuncu.setBolunenSetPasaBastiMi(true, i - 1);
+
+								}
+							} catch (Exception e) {
 
 							}
-						} catch (Exception e) {
+						}
+						if (i == 2) {
+							try {
+								if (Integer.parseInt(
+										oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari2())) > 21) {
+									System.out.print(" PATLADIN :) \n");
+									oyuncu.setBolunenSetPasaBastiMi(true, i - 1);
 
+								}
+							} catch (Exception e) {
+
+							}
 						}
 					}
+
 					if (i == 2) {
 						try {
 							if (Integer
@@ -420,7 +427,6 @@ public class Main {
 			kart.kartCek();
 			kart.cekilenKartiYazdir();
 			oyuncu.ekleOyuncuKartlari(kart.getCekilenKart());
-			oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
 		} else if (secim.equals("pas") || secim.equals("PAS")) {
 			oyuncu.setOyuncuPasDediMi(true); //
 		}
@@ -455,90 +461,32 @@ public class Main {
 
 		oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
 
-		if (oyuncu.isOyuncuBoleBastiMi() == true) {
-			for (int i = 1; i <= 2; i++) {
-
-				if (oyuncu.getBolunenSetPasaBastiMi()[i - 1] == false) {
-					System.out.println(oyuncu.getAd() + " : " + i + ". setiniz için seçin : PAS/KART");
-					String secim2 = scanner.nextLine();
-
-					while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart")
-							&& !secim2.equals("KART")) {
-						System.out.println("Yanlış giris yaptınız.");
-						System.out.println(oyuncu.getAd() + ": " + i + ". setiniz için seçin : PAS/KART");
-						secim2 = scanner.nextLine();
-					}
-
-					if (secim2.equals("pas") || secim2.equals("PAS")) {
-						oyuncu.setBolunenSetPasaBastiMi(true, (i - 1));
-						break;
-					} else if (secim2.equals("kart") || secim2.equals("KART")) {
-						kart.kartCek();
-						kart.cekilenKartiYazdir();
-						if (i == 1) {
-							oyuncu.ekleBolunenOyuncuKartlari1(kart.getCekilenKart());
-						}
-						if (i == 2) {
-							oyuncu.ekleBolunenOyuncuKartlari2(kart.getCekilenKart());
-						}
-					}
-
-					if (i == 1) {
-						try {
-							if (Integer
-									.parseInt(oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari1())) > 21) {
-								System.out.print(" PATLADIN :) \n");
-								oyuncu.setBolunenSetPasaBastiMi(true, i - 1);
-
-							}
-						} catch (Exception e) {
-
-						}
-					}
-					if (i == 2) {
-						try {
-							if (Integer
-									.parseInt(oyuncu.oyuncuSetleriniHesapla(oyuncu.getBolunenOyuncuKartlari2())) > 21) {
-								System.out.print(" PATLADIN :) \n");
-								oyuncu.setBolunenSetPasaBastiMi(true, i - 1);
-
-							}
-						} catch (Exception e) {
-
-						}
-					}
-				}
-			}
+		System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
+		String secim2 = scanner.nextLine();
+		while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart") && !secim2.equals("KART")
+				&& !secim2.equals("2x") && !secim2.equals("2X") && !secim2.equals("Böl") && !secim2.equals("BÖL")
+				&& !secim2.equals("Bol") && !secim2.equals("BOL")) {
+			System.out.println("Yanlış giris yaptınız.");
+			System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
+			secim2 = scanner.nextLine();
 		}
 
-		else {
+		if (secim2.equals("kart") || secim2.equals("KART")) {
+			kart.kartCek();
+			kart.cekilenKartiYazdir();
+			oyuncu.ekleOyuncuKartlari(kart.getCekilenKart());
 
-			System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
-			String secim2 = scanner.nextLine();
-			while (!secim2.equals("pas") && !secim2.equals("PAS") && !secim2.equals("kart") && !secim2.equals("KART")
-					&& !secim2.equals("2x") && !secim2.equals("2X") && !secim2.equals("Böl") && !secim2.equals("BÖL")
-					&& !secim2.equals("Bol") && !secim2.equals("BOL")) {
-				System.out.println("Yanlış giris yaptınız.");
-				System.out.println(oyuncu.getAd() + ": Lütfen Seçiniz -> PAS / KART");
-				secim2 = scanner.nextLine();
-			}
-
-			if (secim2.equals("kart") || secim2.equals("KART")) {
-				kart.kartCek();
-				kart.cekilenKartiYazdir();
-				oyuncu.ekleOyuncuKartlari(kart.getCekilenKart());
-				oyuncu.oyuncuKartlariniGoster(oyuncu.getOyuncuKartlari());
-			} else if (secim2.equals("pas") || secim2.equals("PAS")) {
+		} else if (secim2.equals("pas") || secim2.equals("PAS")) {
+			oyuncu.setOyuncuPasDediMi(true);
+		}
+		try {
+			if (Integer.parseInt(oyuncu.oyuncuHesapla()) > 21 && (oyuncu.isOyuncuBoleBastiMi() == false)) {
+				System.out.print(" PATLADIN :) \n");
 				oyuncu.setOyuncuPasDediMi(true);
 			}
-			try {
-				if (Integer.parseInt(oyuncu.oyuncuHesapla()) > 21 && (oyuncu.isOyuncuBoleBastiMi() == false)) {
-					System.out.print(" PATLADIN :) \n");
-					oyuncu.setOyuncuPasDediMi(true);
-				}
-			} catch (Exception e) {
+		} catch (Exception e) {
 
-			}
 		}
 	}
+
 }

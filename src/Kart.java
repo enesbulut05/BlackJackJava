@@ -31,11 +31,17 @@ public class Kart {
 
 	public void kartCek() {
 		List<String> kartlar = getKartlar();
-		String yeniKart;
+		String yeniKart = null;
 		if (kartlar != null && !kartlar.isEmpty()) {
+
 			yeniKart = kartlar.get(0);
+
 		} else {
-			yeniKart = null;
+			desteOlustur();
+			System.out.println("Deste Bitti. Yeni Deste Oluşturuldu...");
+			kartlar = getKartlar();
+			yeniKart = kartlar.get(0);
+
 		}
 		setCekilenKart(yeniKart);
 		if (kartlar != null && !kartlar.isEmpty()) {
@@ -62,6 +68,7 @@ public class Kart {
 		kartlariKaristir(deste);
 		kartlariKes(deste);
 		setKartlar(deste);
+
 	}
 
 	private static void kartlariKes(List<String> kartlar) {
